@@ -67,3 +67,22 @@ func (self *AES) Decrypt(value string) (string, error) {
 
 	return string(plaintext), nil
 }
+
+// Equals compara duas strings criptografadas e retorna a string descriptografada somente se forem iguais.
+func (self *AES) Equals(value, value2 string) (string, bool) {
+	decrypted, err := self.Decrypt(value)
+	if err != nil {
+		return "", false
+	}
+
+	decrypted2, err := self.Decrypt(value2)
+	if err != nil {
+		return "", false
+	}
+
+	if equals := decrypted == decrypted2; equals {
+		return decrypted, true
+	} else {
+		return "", false
+	}
+}
