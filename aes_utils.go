@@ -9,21 +9,21 @@ import (
 	"io"
 )
 
-type Encrypt struct {
+type AES struct {
 	Key []byte
 }
 
-// NewEncrypt cria uma nova instância de Encrypt com a chave fornecida.
-func NewEncrypt(key string) (*Encrypt, error) {
+// NewAES cria uma nova instância de AES com a chave fornecida.
+func NewAES(key string) (*AES, error) {
 	if len(key) != 32 {
 		return nil, errors.New("A chave deve ter 32 bytes para AES-256")
 	}
 
-	return &Encrypt{Key: []byte(key)}, nil
+	return &AES{Key: []byte(key)}, nil
 }
 
 // Encrypt criptografa uma string com AES-GCM.
-func (self *Encrypt) Encrypt(value string) (string, error) {
+func (self *AES) Encrypt(value string) (string, error) {
 	block, err := aes.NewCipher(self.Key)
 	if err != nil {
 		return "", err
@@ -44,7 +44,7 @@ func (self *Encrypt) Encrypt(value string) (string, error) {
 }
 
 // Decrypt descriptografa uma string com AES-GCM.
-func (self *Encrypt) Decrypt(value string) (string, error) {
+func (self *AES) Decrypt(value string) (string, error) {
 	data, err := base64.StdEncoding.DecodeString(value)
 	if err != nil {
 		return "", err
